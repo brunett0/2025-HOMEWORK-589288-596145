@@ -18,6 +18,11 @@ public class Partita {
 
 	private Stanza stanzaCorrente;
 	private Stanza stanzaVincente;
+	@Override
+	public String toString() {
+		return "finita=" + finita ;
+	}
+
 	private boolean finita;
 	
 	private Giocatore giocatore=new Giocatore();
@@ -57,7 +62,7 @@ public class Partita {
 	 * @return vero se partita vinta
 	 */
 	public boolean vinta() {
-		return this.getStanzaCorrente()== this.getStanzaVincente();
+		return this.getStanzaCorrente() == this.getStanzaVincente();
 	}
 
 	/**
@@ -78,5 +83,11 @@ public class Partita {
 	 */
 	public void setFinita() {
 		this.finita = true;
+	}
+	
+	public boolean giocatoreIsVivo() {
+		if (giocatore.getCfu()<=0)
+			return false;
+		return true;
 	}
 }
