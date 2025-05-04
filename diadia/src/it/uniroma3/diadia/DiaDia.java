@@ -1,6 +1,6 @@
 package it.uniroma3.diadia;
-import it.uniroma3.diadia.ambienti.Stanza;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -26,15 +26,14 @@ public class DiaDia {
 			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
 	
-	static final private String[] elencoComandi = {"vai", "aiuto", "prendi", "posa", "fine"};
+	//static final private String[] elencoComandi = {"vai", "aiuto", "prendi", "posa","guarda", "fine"};
 
 	private Partita partita;
-	private IOConsole console;
+	private IO console;
 
-	public  DiaDia(IOConsole console) {
+	public DiaDia(IO console) {
 		this.partita = new Partita();
 		this.console = console;
-		
 	}
 
 	public void gioca() {
@@ -56,7 +55,8 @@ public class DiaDia {
 	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
 	 */
 	private boolean processaIstruzione(String istruzione) {
-		Comando comandoDaEseguire = new Comando(istruzione);
+		
+		/*Comando comandoDaEseguire = new Comando(istruzione);
 		if (comandoDaEseguire.getNome()!=null) {
 			if (comandoDaEseguire.getNome().equals("fine")) {
 				this.fine();
@@ -79,7 +79,20 @@ public class DiaDia {
 		}
 		console.mostraMessaggio("Inserisci un comando! scegli tra vai aiuto e fine");
 		console.mostraMessaggio("scegli tra: vai aiuto fine");
-		return false;
+		return false;*/
+		
+		Comando comandoDaEseguire;
+		FabbricaDiComandiFisarmonica factory = new FabbricaDiComandiFisarmonica(console);
+		comandoDaEseguire = factory.costruisciComando(istruzione);
+		comandoDaEseguire.esegui(this.partita);
+		
+		if (this.partita.vinta())
+			console.mostraMessaggio("Hai vinto!");
+		
+		if (!this.partita.giocatoreIsVivo())
+			console.mostraMessaggio("Hai esaurito i CFU...");
+
+		return this.partita.isFinita();
 	}   
 
 	// implementazioni dei comandi dell'utente:
@@ -87,6 +100,7 @@ public class DiaDia {
 	/**
 	 * Stampa informazioni di aiuto.
 	 */
+	/*
 	private void aiuto() {
 		for(int i=0; i< elencoComandi.length; i++) 
 			console.mostraMessaggio(elencoComandi[i]+" ");
@@ -96,7 +110,7 @@ public class DiaDia {
 	/**
 	 * Cerca di andare in una direzione. Se c'e' una stanza ci entra 
 	 * e ne stampa il nome, altrimenti stampa un messaggio di errore
-	 */
+	 
 	private void vai(String direzione) {
 		if(direzione==null)
 			console.mostraMessaggio("Dove vuoi andare ?");
@@ -152,16 +166,17 @@ public class DiaDia {
 		}
 		else console.mostraMessaggio("scrivi un attrezzo!");
 	}
+	*/
 
 	/**
 	 * Comando "Fine".
-	 */
+	 
 	private void fine() {
 		console.mostraMessaggio("Grazie di aver giocato!");  // si desidera smettere
-	}
+	}*/
 
 	public static void main(String[] argc) {
-		IOConsole console= new IOConsole();
+		IO console= new IOConsole();
 		DiaDia gioco = new DiaDia(console);
 		gioco.gioca();
 	}
