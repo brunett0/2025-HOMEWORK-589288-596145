@@ -1,35 +1,30 @@
 package it.uniroma3.diadia.ambienti;
 
-import it.uniroma3.diadia.attrezzi.Attrezzo;
+public class StanzaBloccata extends Stanza {
 
-public class StanzaBloccata extends Stanza{
-	private String direzioneBloccata;
-	private String attrezzoChiave;
-	
-	public StanzaBloccata(String nome, String direzioneBloccata, String attrezzoChiave) {
+	private Direzione direzioneBloccata;
+	private String attrezzoSbloccante;
+
+	public StanzaBloccata(String nome, Direzione direzioneBloccata, String attrezzoSbloccante) {
 		super(nome);
-		// TODO Auto-generated constructor stub
-		this.direzioneBloccata=direzioneBloccata;
-		this.attrezzoChiave=attrezzoChiave;
+		this.direzioneBloccata = direzioneBloccata;
+		this.attrezzoSbloccante = attrezzoSbloccante;
 	}
-	
+
 	@Override
-	public Stanza getStanzaAdiacente(String direzione) {
-		if (direzione.equals(direzioneBloccata)) {
-			if (this.hasAttrezzo(attrezzoChiave)) {
-				return super.getStanzaAdiacente(direzione);
-			}
-			else return this;
-			}
-		else return super.getStanzaAdiacente(direzione);
+	public Stanza getStanzaAdiacente(Direzione direzione) {
+		if(direzioneBloccata.equals(direzione) && !this.hasAttrezzo(attrezzoSbloccante)) {
+			return this;
 		}
-	
-	@Override
-	public String toString() {
-    	return  "\n" + super.toString() + "\n" + this.direzioneBloccata + " è bloccata, " + "cerca " + attrezzoChiave + " per aprire!"; 
-    }
+		return super.getStanzaAdiacente(direzione);
+	}
+
 	@Override
 	public String getDescrizione() {
-		return this.toString();
+		String bloccata = "Stanza bloccata verso: "+ direzioneBloccata+"\n posa nella stanza:" + attrezzoSbloccante;
+
+		if(!this.hasAttrezzo(attrezzoSbloccante))
+			return bloccata;
+		return super.getDescrizione();
 	}
 }

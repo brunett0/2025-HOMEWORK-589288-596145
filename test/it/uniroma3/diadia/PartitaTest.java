@@ -1,59 +1,43 @@
 package it.uniroma3.diadia;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.io.FileNotFoundException;
 
-class PartitaTest {
+import org.junit.Before;
+import org.junit.Test;
+
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.Stanza;
+
+public class PartitaTest {
+
+	Labirinto labirinto;
 	Partita partita;
-	Partita partitaVinta;
-	Partita partitaNulla;
-	
-	Partita partitaFinita;
-	@BeforeEach
-	void setUp() throws Exception {
-		partita=new Partita();
-		partitaVinta=new Partita();
-		partitaNulla=new Partita();
-		
-		partitaVinta.setStanzaCorrente(partitaVinta.getStanzaVincente());
-		
-		partitaNulla.getLabirinto().setStanzaVincente(null);
-		
-		
-		partitaFinita=new Partita();
-		partitaFinita.setFinita();
-		
-		partita.getGiocatore().setCfu(0);
-		
+	Stanza nuovaStanza;
+
+	@Before
+	public void setUp() throws FileNotFoundException, FormatoFileNonValidoException {
+		labirinto = Labirinto.newBuilder("labirinto_test.txt").getLabirinto();
+		partita = new Partita(labirinto);
+		nuovaStanza = new Stanza("Salone");
 	}
 
 	@Test
-	void testVintaFalso() {
-		assertFalse(partita.vinta());
+	public void testGetStanzaVincente() {
+		assertEquals("SalaSegreta", partita.getLabirinto().getStanzaVincente().getNome());
 	}
-	@Test
-	void testVintaVero() {
-		assertTrue(partitaVinta.vinta());
-	}
-	@Test
-	void testVintaNull() {
-		assertFalse(partitaNulla.vinta());
-	}
-	
-	@Test 
-	void testIsFinitaSet() {
-		assertTrue(partitaFinita.isFinita());
-	}
-	@Test 
-	void testIsFinitaVinta() {
-		assertTrue(partitaVinta.isFinita());
-	}
-	@Test 
-	void testIsFinitaCfu() {
-		assertTrue(partita.isFinita());
-	}
-	
 
+	@Test
+	public void testSetStanzaCorrente() {
+		partita.getLabirinto().setStanzaCorrente(nuovaStanza);
+		assertEquals(nuovaStanza, partita.getLabirinto().getStanzaCorrente());
+	}
+
+	@Test
+	public void testIsFinita() {
+		assertFalse(partita.isFinita());
+	}
 }
+

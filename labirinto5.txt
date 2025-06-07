@@ -1,0 +1,21 @@
+Stanze:ingresso,anticamera,laboratorio,cripta,salaMagica,scala
+Magica:salaMagica
+Buia: cripta torcia
+Bloccata: laboratorio sud chiave
+Inizio:ingresso
+Vincente:scala
+Mago: anticamera Gandalf "Benvenuto viandante" bastone
+Cane: scala Fido "GRRRRR!" osso
+Strega: cripta Morgana "Non avrai mai la chiave"
+Attrezzi:chiave 1 anticamera, torcia 2 ingresso, libro 3 salaMagica, osso 1 laboratorio
+Uscite:
+ingresso nord anticamera,
+anticamera sud ingresso,
+anticamera est laboratorio,
+laboratorio ovest anticamera,
+laboratorio sud cripta,
+cripta nord laboratorio,
+ingresso ovest salaMagica,
+salaMagica est ingresso,
+salaMagica nord scala,
+scala sud salaMagica

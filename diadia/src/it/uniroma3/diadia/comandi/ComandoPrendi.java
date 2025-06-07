@@ -4,55 +4,30 @@ import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-public class ComandoPrendi implements Comando{
-	private IO console;
-	String nomeattrezzo=null;
+public class ComandoPrendi extends AbstractComando {
+
+	private final static String NOME = "prendi";
+
+	
 	@Override
 	public void esegui(Partita partita) {
-		Attrezzo attrezzo;
-		if (nomeattrezzo!=null) {
-			if (partita.getStanzaCorrente().hasAttrezzo(nomeattrezzo)==true) {
-				attrezzo=partita.getStanzaCorrente().getAttrezzo(nomeattrezzo);
-				@SuppressWarnings("unused")
-				boolean riuscito=partita.getGiocatore().getBorsa().addAttrezzo(attrezzo);
-				if (riuscito=false)
-					console.mostraMessaggio("impossibile aggiungere");
-				console.mostraMessaggio("hai aggiunto"+ " "+ attrezzo.toString());
-				riuscito=partita.getStanzaCorrente().removeAttrezzo(attrezzo);
-				if (riuscito=false)
-					console.mostraMessaggio("impossibile rimuovere dalla stanza");
-				console.mostraMessaggio("attrezzo rimosso dalla stanza");
-				
+		Attrezzo a = partita.getLabirinto().getStanzaCorrente().getAttrezzo(this.getParametro());
+		if(a==null) {
+			this.getIo().mostraMessaggio("Attrezzo non presente nella stanza!");
+		} 
+		else {
+			if(partita.getGiocatore().getBorsa().getPesoRimanente(a)) {
+				partita.getGiocatore().getBorsa().addAttrezzo(a);
+				partita.getLabirinto().getStanzaCorrente().removeAttrezzo(a);
+			} 
+			else
+				this.getIo().mostraMessaggio("Attrezzo troppo pesante");
 			}
-			else console.mostraMessaggio("attrezzo inesistente");
-		}
-		else console.mostraMessaggio("scrivi un attrezzo!");
-	}
-
-	@Override
-	public void setParametro(String parametro) {
-		// TODO Auto-generated method stub
-		this.nomeattrezzo=parametro;
 	}
 
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
-		String stringa="prendi";
-		return stringa;
-	}
-
-	@Override
-	public String getParametro() {
-		
-		return nomeattrezzo;
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void setIo(IO io) {
-		// TODO Auto-generated method stub
-		console=io;
+		return NOME;
 	}
 
 }

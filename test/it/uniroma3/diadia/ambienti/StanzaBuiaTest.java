@@ -1,45 +1,36 @@
 package it.uniroma3.diadia.ambienti;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaBuiaTest {
-	Stanza buia2;
-	Stanza buia;
-	Stanza buia3;
-	Attrezzo focaccia;
-	Attrezzo forno;
-	@BeforeEach
-	void setUp() throws Exception {
-		
-		buia=new StanzaBuia("buia", "focaccia");
-		buia2=new StanzaBuia("buia2", "focaccia");
-		buia3=new StanzaBuia("buia3", "yoyo");
-		
-		focaccia=new Attrezzo("focaccia", 1);
-		forno=new Attrezzo("forno", 9);
+public class StanzaBuiaTest {
+
+	private StanzaBuia stanza;
+	private Attrezzo lumino;
+	@Before
+	public void setUp() throws Exception {
+		stanza = new StanzaBuia("StanzaBuia", "lumino");
+		lumino = new Attrezzo("lumino", 1);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testGetDescrizioneConAttrezzo() {
+		stanza.addAttrezzo(lumino);
+		assertEquals(stanza.toString(), stanza.getDescrizione());
+	}
 	
-		buia.addAttrezzo(forno);
-		
-		buia2.addAttrezzo(focaccia);
-		
-	}
-
 	@Test
-	void testBuioSi() {
-		assertEquals(buia.getDescrizione(), "quì c'è buio pesto");
+	public void testGetDescrizioneSenzaAttrezzo() {
+		String e = "qui c'è un buio pesto";
+		assertEquals(e, stanza.getDescrizione());
 	}
-	@Test
-	void testBuiaNo() {
-		assertEquals(buia2.getDescrizione(), buia2.toString());
-	}
-	@Test 
-	void testVuota(){
-		assertEquals(buia3.getDescrizione(), "quì c'è buio pesto");
-	}
-
 }

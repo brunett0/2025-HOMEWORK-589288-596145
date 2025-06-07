@@ -1,42 +1,52 @@
 package it.uniroma3.diadia.ambienti;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-class StanzaBloccataTest {
-	Stanza normale;
-	Stanza bloccata;
-	Stanza destra;
-	Attrezzo cacciavite;
-	@BeforeEach
-	void setUp() throws Exception {
-		normale=new Stanza("cassaforte");
-		bloccata=new StanzaBloccata("banca", "nord", "chiave");
-		destra=new StanzaBloccata("destra", "sud", "cacciavite");
-		
-		cacciavite=new Attrezzo("cacciavite", 2);
-		
-		bloccata.impostaStanzaAdiacente("nord", normale);
-		bloccata.impostaStanzaAdiacente("destra", destra);
-		
-		destra.impostaStanzaAdiacente("sud", bloccata);
-		destra.addAttrezzo(cacciavite);
+public class StanzaBloccataTest {
+
+	private StanzaBloccata stanzaBloccata;
+	private Stanza stanzaLibera;
+	private Attrezzo chiave;
+
+	@Before
+	public void setUp() throws Exception {
+		stanzaBloccata = new StanzaBloccata("Portone", Direzione.NORD, "chiave");
+		stanzaLibera = new Stanza("Atrio");
+		chiave = new Attrezzo("chiave", 1);
+		stanzaBloccata.impostaStanzaAdiacente(Direzione.NORD, stanzaLibera);
+	}
+
+	@After
+	public void tearDown() throws Exception {
 	}
 
 	@Test
-	void testBloccata() {
-		assertEquals(bloccata.getStanzaAdiacente("nord"), bloccata);
+	public void testGetStanzaAdiacenteDirezioneBloccata() {
+		assertEquals(stanzaBloccata, stanzaBloccata.getStanzaAdiacente(Direzione.NORD));
 	}
+
 	@Test
-	void testSpostaVersoNonBloccataDaStanzaBloccata() {
-		assertEquals(bloccata.getStanzaAdiacente("destra"), destra);
+	public void testGetStanzaAdiacenteDirezioneSbloccata() {
+		stanzaBloccata.addAttrezzo(chiave);
+		assertEquals(stanzaLibera, stanzaBloccata.getStanzaAdiacente(Direzione.NORD));
 	}
-	@Test 
-	void testApriPorta(){
-		assertEquals(destra.getStanzaAdiacente("sud"), bloccata);
+
+	@Test
+	public void testGetDescrizioneDirezioneSbloccata() {
+		stanzaBloccata.addAttrezzo(chiave);
+		assertEquals(stanzaBloccata.toString(), stanzaBloccata.getDescrizione());
+	}
+
+	@Test
+	public void testGetDescrizioneDirezioneBloccata() {
+		String expected = "Stanza bloccata nella direzione: nord\nPrendi il chiave e posalo nella stanza";
+		assertEquals(expected, stanzaBloccata.getDescrizione());
 	}
 }
+

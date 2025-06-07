@@ -1,0 +1,11 @@
+Stanze:ingresso,corridoio,salaSegreta
+Magica:
+Buia:
+Bloccata:
+Inizio:ingresso
+Vincente:salaSegreta
+Mago:
+Cane:
+Strega:
+Attrezzi:lanterna 2 ingresso
+Uscite:ingresso est corridoio,corridoio ovest ingresso,corridoio nord salaSegreta,salaSegreta sud corridoio
